@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  app:
+    build: .
+    container_name: nestjs-app
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_HOST=mysql
+      - DATABASE_PORT=3306
+      - DATABASE_NAME=iqair
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=rasmy4535
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rasmy4535
+      MYSQL_DATABASE: iqair
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+volumes:
+  mysql_data:
